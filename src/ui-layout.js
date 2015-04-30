@@ -605,6 +605,8 @@ angular.module('ui.layout', [])
             }
           }
         });
+        
+        var moveListener;
 
         element.on('mousedown touchstart', function(e) {
           ctrl.movingSplitbar = scope.splitbar;
@@ -612,16 +614,19 @@ angular.module('ui.layout', [])
 
           e.preventDefault();
           e.stopPropagation();
-
-          htmlElement.on('mousemove touchmove', function(event) {
+          
+          moveListener = function(event) {
             scope.$apply(angular.bind(ctrl, ctrl.mouseMoveHandler, event));
-          });
+          };
+
+          document.body.parentElement.addEventListener("mousemove", moveListener, true);
           return false;
         });
 
         htmlElement.on('mouseup touchend', function(event) {
           scope.$apply(angular.bind(ctrl, ctrl.mouseUpHandler, event));
-          htmlElement.off('mousemove touchmove');
+          listener && document.body.parentElement.removeEventListener("mousemove", listener, true);
+          listener = null;
         });
 
         scope.$watch('splitbar.size', function(newValue) {
