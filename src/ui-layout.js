@@ -625,8 +625,8 @@ angular.module('ui.layout', [])
 
         htmlElement.on('mouseup touchend', function(event) {
           scope.$apply(angular.bind(ctrl, ctrl.mouseUpHandler, event));
-          listener && document.body.parentElement.removeEventListener("mousemove", listener, true);
-          listener = null;
+          moveListener && document.body.parentElement.removeEventListener("mousemove", moveListener, true);
+          moveListener = null;
         });
 
         scope.$watch('splitbar.size', function(newValue) {
